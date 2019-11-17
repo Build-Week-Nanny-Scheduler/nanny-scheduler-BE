@@ -1,0 +1,36 @@
+const bcrypt = require("bcryptjs");
+
+exports.seed = function(knex) {
+  // Deletes ALL existing entries
+  return knex("users")
+    .del()
+    .then(function() {
+      // Inserts seed entries
+      return knex("users").insert([
+        {
+          username: "amber123",
+          password: bcrypt.hashSync("Chicken", bcrypt.genSaltSync(10)),
+          firstName: "Amber",
+          lastName: "Smith",
+          city:"Provo",
+          isNanny: false
+        },
+        {
+          username: "user001",
+          password: bcrypt.hashSync("test", bcrypt.genSaltSync(10)),
+          firstName: "Devin",
+          lastName: "Jackson",
+          city:"Detroit",
+          isNanny: true
+        },
+        {
+          username: "taco_luver",
+          password: bcrypt.hashSync("test", bcrypt.genSaltSync(10)),
+          firstName: "Tony",
+          lastName: "Stark",
+          city:"Starkville",
+          isNanny: false
+        }
+      ]);
+    });
+};
