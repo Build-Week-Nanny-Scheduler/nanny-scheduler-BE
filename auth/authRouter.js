@@ -1,81 +1,90 @@
-const bcrypt = require('bcryptjs');
-const router = require('express').Router();
-const jwt = require('jsonwebtoken');
+const router = require("express").Router();
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const secrets = require("../config/secrets.js");
+const Users = require("../users/usersModel.js");
 
-const Users = require('../users/usersModel.js');
-const secrets = require('../config/secrets.js');
-const { validateUser } = require('../users/usersHelpers.js');
-
-// registers new user
-
-router.post('/register', (req,res) => {
-    let user = req.body;
-    const validateResult = validateUser(user);
-
-    if(validateResult.isSuccessful==true){
-        const hash = bcrypt.hashSync(user.password, 10);
-        user.password = hash;
-
-        Users.add(user)
-        .then(saved => {
-            res.status(201),json(saved);
-        })
-        .catch(error => {
-            res.status(400).json(error)
-        })
-    } else {
-        res.status(400).json({
-            message: 'Invalid information about the user',
-            error: validateResult.error
-        })
-    }
-});
-
-// allows users to login with token
-
-router.post('/login', (req, res) => {
-    const validateResult = validateUser(req.body)
-
-    if(!validateResult.isSuccessful){
-        res.status(400).json({
-            message:validateResult.error
-        });
-        return;
-    }
-
-    let { username, password } = req.body;
-
-    Users.findBy({username})
-    .then(user => {
-        if(user && bcrypt.compareSync(password, user,password)){
-            const token = getJwtToken(user.username)
-
-            res.status(200).json({
-                message:`Welcome ${username}!`,
-                token
-            })
-        } else {
-            res.status(401).json({
-                message:'Invalid credentials'
-            })
-        }
-    })
-    .catch(error => {
-        res.status(500).json(error)
-    })
-});
-
-// assigns a token to each user
-
-function getJwtToken(user){
-    const payload = {
-        subject: user.id,
-        username: user.username
-    };
-    const options = {
-        expiresIn: '1d'
-    }
-    return jwt.sign(payload, secrets.JWT_SECRET, options)
+const requiredRegistration = (req, res, next) => {
+  const { username, password, firstName, lastName } = req.body;
+  if (username && password && firstName && lastName) {
+    next();
+  } else {
+    res.status(400).json({
+      message: "Username, password, first name, and last name are required!"
+    });
+  }
 };
+
+const requiredLogin = (req, res, next) => {
+  const { username, password } = req.body;
+  if (username && password) {
+    next();
+  } else {
+    res.status(400).json({
+      message: "Username and password are required!"
+    });
+  }
+};
+
+router.post("/register", requiredRegistration, (req, res) => {
+  const creds = req.body;
+  console.log(creds);
+  const salt = bcrypt.genSaltSync(10);
+  const hash = bcrypt.hashSync(creds.password, salt);
+
+  Users.insert({ ...creds, password: hash })
+    .then(() => {
+      Users.getBy({ username: creds.username }).then(user => {
+        const token = generateToken(user);
+        res.status(201).json({
+          id: user.id,
+          token
+        });
+      });
+    })
+    .catch(err => {
+      res.status(500).json({ message: "", error: err });
+    });
+});
+
+
+router.post("/login", requiredLogin, (req, res) => {
+  const creds = req.body;
+
+  Users.getBy({ username: creds.username })
+    .then(user => {
+      //Check if passwords are the same
+      if (user && bcrypt.compareSync(creds.password, user.password)) {
+        const token = generateToken(user);
+
+        newUser = { ...user, isParent: user.isParent === "1" ? true : false };
+
+        res.status(202).json({
+          message: "Correct Credentials!",
+          user: newUser,
+          token
+        });
+      } else {
+        res.status(401).json({ message: "Incorrect Credentials!" });
+        //Security Help: User will get incorrect credentials for wrong password or wrong username; user will not know which one.
+      }
+    })
+    .catch(err => {
+      res.status(500).json({ message: "Database error", error: err });
+    });
+});
+
+function generateToken(user) {
+  const payload = {
+    subject: user.id, 
+    username: user.username
+    
+  };
+
+  const options = {
+    expiresIn: "1d" 
+  };
+  return jwt.sign(payload, secrets.jwtSecret, options); 
+}
 
 module.exports = router;
