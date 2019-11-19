@@ -4,6 +4,10 @@ const insert = user => {
   return db("users").insert(user);
 };
 
+const find = () => {
+  return db("users");
+};
+
 const getBy = prop => {
   return db("users")
     .where(prop)
@@ -39,5 +43,6 @@ module.exports = {
   insert,
   getBy,
   update,
-  deleteUser
+  deleteUser,
+  find
 };
