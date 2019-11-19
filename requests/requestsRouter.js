@@ -28,7 +28,7 @@ router.post("/", (req, res) => {
       .status(400)
       .json({
         message:
-          "You are missing either requesterUserID, meetingPlace, dateTime, or kids!"
+          "You are missing either name, city, state, number of kids and their ages, or when you need a nanny!"
       });
   }
 });
