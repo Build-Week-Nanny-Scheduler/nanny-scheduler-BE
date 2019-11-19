@@ -35,3 +35,6 @@ to post a request they will need to add:
 
 this endpoint will take the requester's id and cross check against potential nanny's id in the database
 It will return a boolean value if the request is accepted or not.
+
+Full Documentation:
+https://documenter.getpostman.com/view/9507100/SW7Xb9wn?version=latest
