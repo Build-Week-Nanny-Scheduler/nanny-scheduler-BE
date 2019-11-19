@@ -32,12 +32,8 @@ router.get("/:id", (req, res) => {
     .catch(err => {
       res.status(500).json({ message: "Database error", error: err });
     });
-}); //works without middleware
+}); 
 
-// Update user information
-// Required: id, changes --> returns user object
-// incorrect changes --> 500
-// Works at 11:56am
 /*---------Update User Info---------*/
 router.put("/:id", checkID, (req, res) => {
   const changes = req.body;
