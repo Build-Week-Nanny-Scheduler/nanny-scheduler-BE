@@ -33,7 +33,7 @@ exports.up = function(knex) {
         .bool("accepted")
         .defaultTo(false)
         .notNullable();
-        tbl.string('Name', 128).notNullable();
+        tbl.string('name', 128).notNullable();
         tbl.string('city',128).notNullable();
         tbl.string('state', 50).notNullable();
         tbl.string('numberOfKids', 25).notNullable();
