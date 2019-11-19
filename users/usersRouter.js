@@ -2,6 +2,18 @@ const router = require("express").Router();
 const Users = require("../users/usersModel.js");
 
 /*---------Get user Info---------*/
+router.get('/', (req,res) => {
+  Users.find()
+  .then(users => {
+    res.status(200).json(users)
+  })
+  .catch(error => {
+    res.status.json({
+      message: 'error connecting to the database'
+    })
+  })
+})
+
 router.get("/:id", (req, res) => {
   Users.getBy({ id: req.params.id })
     .then(user => {
