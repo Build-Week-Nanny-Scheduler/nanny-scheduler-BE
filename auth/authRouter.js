@@ -66,7 +66,6 @@ router.post("/login", requiredLogin, (req, res) => {
         });
       } else {
         res.status(401).json({ message: "Incorrect Credentials!" });
-        //Security Help: User will get incorrect credentials for wrong password or wrong username; user will not know which one.
       }
     })
     .catch(err => {
