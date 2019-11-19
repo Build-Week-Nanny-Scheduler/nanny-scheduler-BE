@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "server": "nodemon index.js",
-    "start" : "node index.js",
+    "start": "node index.js",
     "test": "cross-env DB_ENV=testing jest --watch --verbose"
   },
   "repository": {
@@ -30,6 +30,7 @@
     "helmet": "^3.21.2",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.20.2",
+    "pg": "^7.12.1",
     "sqlite3": "^4.1.0"
   }
 }
