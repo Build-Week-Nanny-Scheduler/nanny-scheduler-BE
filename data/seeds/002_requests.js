@@ -1,8 +1,4 @@
 exports.seed = function(knex) {
-  // Deletes ALL existing entries
-  return knex("requests")
-    .del()
-    .then(function() {
       // Inserts seed entries
       return knex("requests").insert([
         {
@@ -61,5 +57,4 @@ exports.seed = function(knex) {
           timeNeeded: "Saturday and Sunday round the clock"
         }
       ]);
-    });
-};
+    };
