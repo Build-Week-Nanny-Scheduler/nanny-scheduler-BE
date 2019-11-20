@@ -5,15 +5,18 @@ const Requests = require("../requests/requestsModel.js");
 router.post("/", (req, res) => {
   const {
     requesterUserID,
+    nannyUserId,
+    name, 
     city,
     state,
     numberOfKids,
-    kidsAge,
-    timeNeeded
+    kidsAges,
+    timeNeeded,
+    accepted
   } = req.body;
   //Required Fields
   console.log(req.body);
-  if (requesterUserID && city && state && numberOfKids && kidsAge && timeNeeded) {
+  if (requesterUserID && nannyUserId && accepted && name && city && state && numberOfKids && kidsAges && timeNeeded) {
     Requests.insert(req.body)
       .then(response => {
         if (response) {
