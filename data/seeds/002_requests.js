@@ -2,8 +2,6 @@ exports.seed = function(knex) {
   // Inserts seed entries
   return knex("requests").insert([
     {
-      requesterUserID: 1,
-      nannyUserID: 2,
       accepted: true,
       name: "Tiffany",
       city: "Detroit",
@@ -13,8 +11,6 @@ exports.seed = function(knex) {
       timeNeeded: "MWF from 2-6"
     },
     {
-      requesterUserID: 1,
-      nannyUserID:2,
       accepted: false,
       name: "Angela",
       city: "Provo",
@@ -23,9 +19,8 @@ exports.seed = function(knex) {
       kidsAges:"five and seven",
       timeNeeded: "Tuesday and Thursday from 5-9"
     },
-    {
-      requesterUserID: 2,
-      nannyUserID: 1,
+    
+    { 
       accepted: true,
       name: "Amanda",
       city: "Riverside",
@@ -35,8 +30,6 @@ exports.seed = function(knex) {
       timeNeeded: "Friday from 1-5"
     },
     {
-      requesterUserID: 2,
-      nannyUserID:2,
       accepted: false,
       name: "Dave",
       city: "Pocatello",
@@ -46,8 +39,6 @@ exports.seed = function(knex) {
       timeNeeded: "this Saturday from 8-7"
     },
     {
-      requesterUserID: 3,
-      nannyUserID: 1,
       accepted: true,
       name: "Kate",
       city: "Las Vegas",
