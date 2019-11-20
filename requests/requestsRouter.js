@@ -1,41 +1,46 @@
 const router = require("express").Router();
-const Requests = require("../requests/requestsModel.js");
+const requests = require("../requests/requestsModel.js");
 
 /* --- Insert a request -- */
-router.post("/", (req, res) => {
-  const {
-    requesterUserID,
-    nannyUserId,
-    name, 
-    city,
-    state,
-    numberOfKids,
-    kidsAges,
-    timeNeeded,
-    accepted
-  } = req.body;
-  //Required Fields
-  console.log(req.body);
-  if (requesterUserID && nannyUserId && accepted && name && city && state && numberOfKids && kidsAges && timeNeeded) {
-    Requests.insert(req.body)
-      .then(response => {
-        if (response) {
-          res.status(200).json({ message: "Insertion Successful!" });
+router.post("/", async (req, res) => {
+  const userID = req.decodedToken.subject.toString();
+	const { nannyUserID, accepted, name, city, state, numberOfKids, kidsAges, timeNeeded } = req.body;
+  console.log('from post router payload',req.decodedToken)
+  console.log('nanny id',nannyUserID);
+  if ( accepted || name || city || state || numberOfKids || kidsAges || timeNeeded) {
+    let userRequest ={
+      requesterUserID:userID,
+      nannyUserID:nannyUserID,
+      accepted:accepted, 
+      name:name,
+      city:city,
+      state:state,
+      numberOfKids:numberOfKids,
+      kidsAges:kidsAges,
+      timeNeeded:timeNeeded
+    }
+    console.log(userRequest)
+      try{
+        const result= await requests.insert(userRequest)
+        if(result){
+          res.status(200).json({
+            message:'insert successful!'
+          }) 
+        } else {
+          res
+            .status(400)
+            .json({
+              message:
+                "You are missing either name, city, state, number of kids and their ages, or when you need a nanny!"
+            });
         }
-      })
-      .catch(error => {
+      }
+      catch(error) {
+        console.log(error.message);
         res.status(500).json({ message: "Database Error", error });
-      });
-  } else {
-    res
-      .status(400)
-      .json({
-        message:
-          "You are missing either name, city, state, number of kids and their ages, or when you need a nanny!"
-      });
-  }
+      };
+  };
 });
-
 /* --UPDATE a request */
 router.put("/:requestID", (req, res) => {
   console.log(req.body);
@@ -45,7 +50,7 @@ router.put("/:requestID", (req, res) => {
 
   console.log(changes, requestID);
 
-  Requests.update(requestID, changes)
+  requests.update(requestID, changes)
     .then(response => {
       console.log(response);
       res.status(200).json({ message: "Request Updated!" });
@@ -59,7 +64,7 @@ router.put("/:requestID", (req, res) => {
 router.delete("/:requestID", (req, res) => {
   const { requestID } = req.params;
 
-  Requests.deleteRequest(requestID)
+  requests.deleteRequest(requestID)
     .then(response => {
       if (response) {
         res.status(200).json({ message: "Request Deleted!" });
@@ -71,14 +76,15 @@ router.delete("/:requestID", (req, res) => {
 });
 /* GET all requests - Filter */
 router.get("/all", (req, res) => {
+  console.log('hello from all requests');
   let { filter, except } = req.body;
 
   filter = !filter ? {} : filter;
   except = !except ? {} : except;
 
-  Requests.getAll(filter, except)
+  requests.getAll(filter, except)
     .then(responses => {
-      console.log(responses);
+      // console.log(responses);
       boolResponses = responses.map(r => {
         return { ...r, accepted: r.accepted === 0 ? false : true };
       });

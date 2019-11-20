@@ -8,8 +8,10 @@ const getAll = (filter, except) => {
     .whereNot(except);
 };
 
-const insert = request => {
-  return db("requests").insert(request);
+async function insert (request) {
+  const result = await db("requests").insert(request);
+  console.log('from the request model',request);
+  return result;
 };
 
 const update = (requestID, changes) => {

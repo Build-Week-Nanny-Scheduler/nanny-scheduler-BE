@@ -6,13 +6,14 @@ module.exports = (req, res, next) => {
   const token = req.headers.authorization;
 
   if (token) {
-    jwt.verify(token, secrets.jwtSecret, (err, decodeToken) => {
+    jwt.verify(token, secrets.jwtSecret, (err, decodedToken) => {
       if (err) {
         res
           .status(401)
           .json({ message: "You are not authorized to see this content." });
       } else {
-        req.user = {};
+        req.decodedToken= decodedToken;
+        // req.user = {};
         next();
       }
     });
