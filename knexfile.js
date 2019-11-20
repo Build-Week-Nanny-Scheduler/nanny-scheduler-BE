@@ -3,7 +3,7 @@ module.exports = {
     client: 'sqlite3',
     useNullAsDefault: true,
     connection: {
-      filename: './data/datbase.db3'
+      filename: './data/nannies.db3'
     },
     pool: {
       afterCreate: (conn, done) => {

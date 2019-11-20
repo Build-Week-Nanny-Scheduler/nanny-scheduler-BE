@@ -6,6 +6,7 @@ exports.seed = function(knex) {
       // Inserts seed entries
       return knex("users").insert([
         {
+          id:1,
           username: "amber12",
           password: bcrypt.hashSync("amber123", bcrypt.genSaltSync(10)),
           firstName: "Amber",
@@ -14,6 +15,7 @@ exports.seed = function(knex) {
           isNanny: false
         },
         {
+          id:2,
           username: "user01",
           password: bcrypt.hashSync("user001", bcrypt.genSaltSync(10)),
           firstName: "Devin",
@@ -22,6 +24,7 @@ exports.seed = function(knex) {
           isNanny: true
         },
         {
+          id:3,
           username: "taco_luver2",
           password: bcrypt.hashSync("taco_luver", bcrypt.genSaltSync(10)),
           firstName: "Tony",
