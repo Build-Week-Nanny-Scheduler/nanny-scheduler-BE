@@ -87,7 +87,7 @@ router.get("/all", (req, res) => {
     .then(responses => {
       // console.log(responses);
       boolResponses = responses.map(r => {
-        return { ...r, accepted: r.accepted === 0 ? false : true };
+        return { ...r, accepted: r.accepted === 0 ? true : false };
       });
       res.status(200).json(boolResponses);
     })
