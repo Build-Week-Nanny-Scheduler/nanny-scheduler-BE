@@ -37,7 +37,7 @@ router.post("/", async (req, res) => {
         }
       }
       catch(error) {
-        console.log(error);
+        console.log(error.message);
         res.status(500).json({ message: "Database Error", error });
       };
   };
@@ -87,7 +87,7 @@ router.get("/all", (req, res) => {
     .then(responses => {
       // console.log(responses);
       boolResponses = responses.map(r => {
-        return { ...r, accepted: r.accepted === 0 ? true : false };
+        return { ...r, accepted: r.accepted === false ? false : true };
       });
       res.status(200).json(boolResponses);
     })
