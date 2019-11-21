@@ -37,7 +37,7 @@ router.post("/", async (req, res) => {
         }
       }
       catch(error) {
-        console.log(error.message);
+        console.log(error);
         res.status(500).json({ message: "Database Error", error });
       };
   };
