@@ -42,6 +42,6 @@ exports.up = function(knex) {
   };
   
   exports.down = function(knex) {
-    return knex.schema.dropTableIfExists('users')
-    .dropTableIfExists('requests')
+    return knex.schema.dropTableIfExists('requests')
+    .dropTableIfExists('users')
   };
