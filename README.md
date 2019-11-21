@@ -37,4 +37,4 @@ this endpoint will take the requester's id and cross check against potential nan
 It will return a boolean value if the request is accepted or not.
 
 Full Documentation:
-https://documenter.getpostman.com/view/9507100/SW7Xb9wn?version=latest
+https://documenter.getpostman.com/view/9507100/SW7Xb9wn?version=latest#b8aa327d-195b-4cd3-84fe-067036f7aff5

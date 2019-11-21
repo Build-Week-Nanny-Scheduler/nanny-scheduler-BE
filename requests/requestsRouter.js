@@ -23,6 +23,7 @@ router.post("/", async (req, res) => {
       try{
         const result= await requests.insert(userRequest)
         if(result){
+          console.log('hello from request results',result);
           res.status(200).json({
             message:'insert successful!'
           }) 
