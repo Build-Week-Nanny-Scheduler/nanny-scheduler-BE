@@ -30,7 +30,7 @@ exports.up = function(knex) {
         .onDelete("cascade")
         .onUpdate("cascade");
         tbl
-        .boolean("accepted", false);
+        .boolean().notNullable();
         tbl.string('name', 128).notNullable();
         tbl.string('city',128).notNullable();
         tbl.string('state', 50).notNullable();
