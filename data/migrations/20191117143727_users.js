@@ -31,7 +31,7 @@ exports.up = function(knex) {
         .onUpdate("cascade");
         tbl
         .boolean("accepted")
-        .defaultTo(false);
+        .defaultTo(0);
         tbl.string('name', 128).notNullable();
         tbl.string('city',128).notNullable();
         tbl.string('state', 50).notNullable();
