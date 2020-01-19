@@ -8,9 +8,9 @@ const getAll = (filter, except) => {
     .whereNot(except);
 };
 
-async function insert (request) {
+async function insert(request) {
   const result = await db("requests").insert(request);
-  console.log('from the request model',request);
+  console.log('from the request model', request);
   return result;
 };
 
